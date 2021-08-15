@@ -26,9 +26,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware(['api'])->group(function ($router) {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::get('me', [AuthController::class, 'me'])->middleware('log.route');
     Route::post('register', [RegistrationController::class, 'register']);
+});
+
+Route::middleware(['api', 'auth:api'])->group(function ($router) {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
 
     Route::get('get_date_info', [CovidDataAnalysisController::class, 'getDateInfo']);
     Route::get('get_state_info', [CovidDataAnalysisController::class, 'getStateInfo']);
